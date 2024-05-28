@@ -97,6 +97,7 @@ def shortest_path(source, target):
     visited = set()
     while not front.empty():
         node = front.remove()
+        visited.add(node)
         if node.state == target:
             path = []
             while node.parent != None:
