@@ -91,16 +91,15 @@ def shortest_path(source, target):
 
     If no possible path, returns None.
     """
-
     front = QueueFrontier()
-    front.add(Node(source,None,None))
+    front.add(Node(source, parent=None, action=None))
     visited = set()
     while not front.empty():
         node = front.remove()
         visited.add(node)
         if node.state == target:
             path = []
-            while node.parent != None:
+            while not node.parent:  # not None
                 path.append((node.action, node.state))
                 node = node.parent
             path.reverse()
