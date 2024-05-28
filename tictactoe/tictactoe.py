@@ -50,7 +50,7 @@ def result(board, action):
     """
     Returns the board that results from making move (i, j) on the board.
     """
-    if board[action[0]][action[1]] != EMPTY:
+    if board[action[0]][action[1]] != EMPTY or action[0] not in range(3) or action[1] not in range(3):
         raise ValueError("Invalid action. ")
     else:
         res = eval(repr(board))
@@ -130,7 +130,7 @@ def minimax(board):
                     break
         return maxval, move
     if terminal(board):
-        return utility(board)
+        return None
     else:
         if (1, 1) in actions(board):
             return (1, 1)
