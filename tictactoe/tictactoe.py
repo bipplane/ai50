@@ -3,6 +3,7 @@ Tic Tac Toe Player
 """
 import math
 
+
 X = "X"
 O = "O"
 EMPTY = None
