@@ -199,6 +199,7 @@ class MinesweeperAI():
                     continue
                 if (i, j) in self.mines:  # ignore known mines
                     count -= 1
+                    continue
                 if 0 <= i < self.height and 0 <= j < self.width:
                     cellset.add((i, j))
         self.knowledge.append(Sentence(cellset, count))  # new knowledge
@@ -212,20 +213,20 @@ class MinesweeperAI():
                 mines = mines.union(i.known_mines())
             if safes:
                 updated = True
-            for i in safes:
-                self.mark_safe(i)
+                for i in safes:
+                    self.mark_safe(i)
             if mines:
                 updated = True
-            for i in mines:
-                self.mark_mine(i)  # added knowledge of safes and mines
+                for i in mines:
+                    self.mark_mine(i)  # added knowledge of safes and mines
             self.knowledge[:] = [x for x in self.knowledge if x != Sentence(set(), 0)]
-        for i in self.knowledge:
-            for j in self.knowledge:
-                if i != j:
-                    if i.count > 0 and j.count > 0 and i.cells.issubset(j.cells):
-                        self.knowledge.append(
-                            Sentence(j.cells - i.cells, j.count - i.count)
-                        )
+            for i in self.knowledge:
+                for j in self.knowledge:
+                    if i != j:
+                        if i.count > 0 and j.count > 0 and i.cells.issubset(j.cells):
+                            self.knowledge.append(
+                                Sentence(j.cells - i.cells, j.count - i.count)
+                            )
 
     def make_safe_move(self):
         """
