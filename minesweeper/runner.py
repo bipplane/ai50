@@ -220,3 +220,4 @@ while True:
             ai.add_knowledge(move, nearby)
 
     pygame.display.flip()
+
