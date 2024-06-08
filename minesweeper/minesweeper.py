@@ -107,7 +107,7 @@ class Sentence():
         """
         if len(self.cells) == self.count and self.count > 0:
             return self.cells
-        return None
+        return set()
 
     def known_safes(self):
         """
@@ -115,7 +115,7 @@ class Sentence():
         """
         if self.count == 0:
             return self.cells
-        return None
+        return set()
 
     def mark_mine(self, cell):
         """
@@ -197,28 +197,26 @@ class MinesweeperAI():
             for j in range(cell[1]-1, cell[1]+2):
                 if cell == (i, j) or (i, j) in self.safes:  # ignore known safes
                     continue
-                elif (i, j) in self.mines:  # ignore known mines
+                if (i, j) in self.mines:  # ignore known mines
                     cnt -= 1
                 if 0 <= i < self.height and 0 <= j < self.width:
-                    cellset.add((i,j))
-        newSentence = Sentence(cellset, count - cnt)
+                    cellset.add((i, j))
+        newSentence = Sentence(cellset, cnt)
         self.knowledge.append(newSentence)  # new knowledge
 
         currsafe, currmine = set(), set()
         for i in self.knowledge:
             currsafe = currsafe.union(i.known_safes())
             currmine = currmine.union(i.known_mines())
-        if currsafe:
-            for i in currsafe:
-                self.mark_safe(i)
-        if currmine:
-            for i in currmine:
-                self.mark_mine(i)  # added knowledge of safes and mines
+        for i in currsafe:
+            self.mark_safe(i)
+        for i in currmine:
+            self.mark_mine(i)  # added knowledge of safes and mines
 
         for i in self.knowledge:
             if newSentence.cells.issubset(i.cells):
                 if newSentence.count > 0 and i.count > 0 and newSentence != i:
-                    self.knowledge.append(Sentence(i - newSentence, i.count - newSentence.count))
+                    self.knowledge.append(i.cells.difference(newSentence.cells))
 
     def make_safe_move(self):
         """
