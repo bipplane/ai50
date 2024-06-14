@@ -90,7 +90,6 @@ def sample_pagerank(corpus, damping_factor, n):
 
     for page in dict1:
         dict1[page] /= n
-    print(sum(dict1.values()))
     return dict1
 
 
@@ -103,21 +102,25 @@ def iterate_pagerank(corpus, damping_factor):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
-    dict1 = {}
+    dict1, dict2 = {}, {}
     for i in corpus:
         dict1[i] = 1/len(corpus)
+        dict2[i] = 0
     while True:
-        dict2 = {}
         for i in corpus:
             dict2[i] = (1-damping_factor)/len(corpus)
-            for j in corpus:
-                if i in corpus[j]:
-                    dict2[i] += damping_factor*dict1[j]/len(corpus[j])
-        if dict2 == dict1:
+            for p in corpus:
+                if i in corpus[p]:
+                    dict2[i] += damping_factor * dict1[p] / len(corpus[p])
+                if not corpus[p]:
+                    dict2[i] += damping_factor * dict1[p] / len(corpus)
+        if all(abs(dict2[i] - dict1[i]) <= 0.001 for i in dict1):
             break
         dict1 = dict2
-    print(sum(dict1.values()))
-    return dict1
+    total = sum(dict2.values())
+    for i in dict2:
+        dict2[i] /= total
+    return dict2
 
 
 if __name__ == "__main__":
