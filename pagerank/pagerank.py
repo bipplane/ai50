@@ -60,12 +60,12 @@ def transition_model(corpus, page, damping_factor):
     dict1 = {}
     if page in corpus:
         for i in corpus:
-            dict1[i] = (1 - damping_factor) / len(corpus)
+            dict1[i] = (1-damping_factor)/len(corpus)
             if i in corpus[page]:
-                dict1[i] += damping_factor / len(corpus[page])
+                dict1[i] += damping_factor/len(corpus[page])
     else:
         for i in corpus:
-            dict1[i] = 1 / len(corpus)
+            dict1[i] = 1/len(corpus)
     return dict1
 
 
@@ -78,18 +78,20 @@ def sample_pagerank(corpus, damping_factor, n):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
-    dict2 = {}
+    dict1 = {}
     for i in corpus:
-        dict2[i] = 0
-    dict2[random.choice(list(corpus.keys()))] = 1
-    for i in range(n - 1):
-        dict3 = {}
-        for j in corpus:
-            dict3[j] = 0
-            for k in corpus:
-                dict3[j] += dict2[k] * transition_model(corpus, k, damping_factor)[j]
-        dict2 = dict3
-    return dict2
+        dict1[i] = 0
+    page = random.choice(list(corpus.keys()))
+    for _ in range(n):
+        chosen = transition_model(corpus, page, damping_factor)
+        page = random.choices(
+            list(chosen.keys()), weights=chosen.values(), k=1)[0]
+        dict1[page] += 1
+
+    for page in dict1:
+        dict1[page] /= n
+    print(sum(dict1.values()))
+    return dict1
 
 
 def iterate_pagerank(corpus, damping_factor):
@@ -101,20 +103,21 @@ def iterate_pagerank(corpus, damping_factor):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
-    dict3 = {}
+    dict1 = {}
     for i in corpus:
-        dict3[i] = 1 / len(corpus)
+        dict1[i] = 1/len(corpus)
     while True:
-        dict4 = {}
+        dict2 = {}
         for i in corpus:
-            sum = 0
+            dict2[i] = (1-damping_factor)/len(corpus)
             for j in corpus:
-                sum += dict3[j] * transition_model(corpus, j, damping_factor)[i]
-            dict4[i] = (1 - damping_factor) / len(corpus) + damping_factor * sum
-        if dict4 == dict3:
+                if i in corpus[j]:
+                    dict2[i] += damping_factor*dict1[j]/len(corpus[j])
+        if dict2 == dict1:
             break
-        dict3 = dict4
-    return dict3
+        dict1 = dict2
+    print(sum(dict1.values()))
+    return dict1
 
 
 if __name__ == "__main__":
