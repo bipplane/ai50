@@ -114,7 +114,7 @@ def iterate_pagerank(corpus, damping_factor):
                     dict2[i] += damping_factor * dict1[p] / len(corpus[p])
                 if not corpus[p]:
                     dict2[i] += damping_factor * dict1[p] / len(corpus)
-        if all(abs(dict2[i] - dict1[i]) <= 0.001 for i in dict1):
+        if all(abs(dict2[i] - dict1[i]) <= 0.000001 for i in dict1):
             break
         dict1 = dict2
     total = sum(dict2.values())
