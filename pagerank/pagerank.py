@@ -57,7 +57,16 @@ def transition_model(corpus, page, damping_factor):
     linked to by `page`. With probability `1 - damping_factor`, choose
     a link at random chosen from all pages in the corpus.
     """
-    raise NotImplementedError
+    dict1 = {}
+    if page in corpus:
+        for i in corpus:
+            dict1[i] = (1 - damping_factor) / len(corpus)
+            if i in corpus[page]:
+                dict1[i] += damping_factor / len(corpus[page])
+    else:
+        for i in corpus:
+            dict1[i] = 1 / len(corpus)
+    return dict1
 
 
 def sample_pagerank(corpus, damping_factor, n):
@@ -69,7 +78,18 @@ def sample_pagerank(corpus, damping_factor, n):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
-    raise NotImplementedError
+    dict2 = {}
+    for i in corpus:
+        dict2[i] = 0
+    dict2[random.choice(list(corpus.keys()))] = 1
+    for i in range(n - 1):
+        dict3 = {}
+        for j in corpus:
+            dict3[j] = 0
+            for k in corpus:
+                dict3[j] += dict2[k] * transition_model(corpus, k, damping_factor)[j]
+        dict2 = dict3
+    return dict2
 
 
 def iterate_pagerank(corpus, damping_factor):
@@ -81,7 +101,20 @@ def iterate_pagerank(corpus, damping_factor):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
-    raise NotImplementedError
+    dict3 = {}
+    for i in corpus:
+        dict3[i] = 1 / len(corpus)
+    while True:
+        dict4 = {}
+        for i in corpus:
+            sum = 0
+            for j in corpus:
+                sum += dict3[j] * transition_model(corpus, j, damping_factor)[i]
+            dict4[i] = (1 - damping_factor) / len(corpus) + damping_factor * sum
+        if dict4 == dict3:
+            break
+        dict3 = dict4
+    return dict3
 
 
 if __name__ == "__main__":
