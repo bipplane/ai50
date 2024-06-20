@@ -161,12 +161,8 @@ def joint_probability(people, one_gene, two_genes, have_trait):
             elif pgene == 2:
                 joint_p *= PROBS["gene"][2] * PROBS["trait"][pgene][ptrait]
             else:
-                joint_p *= PROBS["gene"][0]
+                joint_p *= PROBS["gene"][0] * PROBS["trait"][pgene][ptrait]
 
-            if ptrait:
-                joint_p *= PROBS["trait"][1]
-            else:
-                joint_p *= PROBS["trait"][0]
         else:
             mother_prob = parent_probability(people[i]['mother'], one_gene, two_genes)
             father_prob = parent_probability(people[i]['father'], one_gene, two_genes)
