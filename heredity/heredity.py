@@ -143,7 +143,7 @@ def joint_probability(people, one_gene, two_genes, have_trait):
         if parent not in one_gene and parent not in two_genes:
             return PROBS["mutation"]
         elif parent in one_gene:
-            return 0.5
+            return PROBS["mutation"] * 2
         elif parent in two_genes:
             return 1 - PROBS["mutation"]
     joint_p = 1
@@ -211,7 +211,6 @@ def normalize(probabilities):
             probabilities[i]["gene"][j] /= genesum
         for k in probabilities[i]["trait"]:
             probabilities[i]["trait"][k] /= traitsum
-
 
 
 if __name__ == "__main__":
