@@ -130,11 +130,11 @@ class CrosswordCreator():
                 for j in self.domains[y]:
                     if i[v1] == j[v2]:
                         break
-                    else:
-                        lst.append(i)
+                else:
+                    updated = True
+                    lst.append(i)
             for i in lst:
                 self.domains[x].remove(i)
-                updated = True
         return updated
 
     def ac3(self, arcs=None):
@@ -146,7 +146,7 @@ class CrosswordCreator():
         Return True if arc consistency is enforced and no domains are empty;
         return False if one or more domains end up empty.
         """
-        if not arcs:
+        if arcs is None:
             queue = []
             for i in self.domains.keys():
                 for j in self.domains.keys():
@@ -203,7 +203,7 @@ class CrosswordCreator():
         The first value in the list, for example, should be the one
         that rules out the fewest values among the neighbors of `var`.
         """
-        dict = {}
+        dict1 = {}
         for i in self.domains[var]:
             if i not in assignment:
                 cnt = 0
@@ -211,8 +211,8 @@ class CrosswordCreator():
                     if k in self.domains[var]:
                         if i in self.domains[k]:
                             cnt += 1
-                dict[i] = cnt
-        return sorted(dict, key=lambda key: dict[key])
+                dict1[i] = cnt
+        return sorted(dict1, key=lambda key: dict1[key])
 
     def select_unassigned_variable(self, assignment):
         """
