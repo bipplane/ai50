@@ -18,7 +18,7 @@ def main():
     X_train, X_test, y_train, y_test = train_test_split(
         evidence, labels, test_size=TEST_SIZE
     )
-    print(evidence[0])
+
     # Train model and make predictions
     model = train_model(X_train, y_train)
     predictions = model.predict(X_test)
@@ -61,7 +61,7 @@ def load_data(filename):
     """
     evidence = []
     labels = []
-    with open("shopping.csv") as f:
+    with open("shopping.csv", "r") as f:
         reader = csv.reader(f)
         for row in reader:
             data = [int(row[0]), float(row[1]), int(row[2]), float(row[3]),
@@ -69,7 +69,7 @@ def load_data(filename):
                     float(row[8]), float(row[9]), int(row[10]), int(row[11]),
                     int(row[12]), int(row[13]), int(row[14]), int(row[15]), int(row[16])]
             evidence.append(data[:16])
-            labels.append(int(row[16]))
+            labels.append(data[16])
     return evidence, labels
 
 
@@ -111,7 +111,7 @@ def evaluate(labels, predictions):
             total_spec += 1
             if pre == res:
                 spec += 1
-    return sens/totalsens, spec/totalspec
+    return sens/total_sens, spec/total_spec
 
 
 if __name__ == "__main__":
