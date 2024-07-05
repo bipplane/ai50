@@ -67,9 +67,10 @@ def load_data(filename):
             data = [int(row[0]), float(row[1]), int(row[2]), float(row[3]),
                     int(row[4]), float(row[5]), float(row[6]), float(row[7]),
                     float(row[8]), float(row[9]), int(row[10]), int(row[11]),
-                    int(row[12]), int(row[13]), int(row[14]), int(row[15]), int(row[16])]
-            evidence.append(data[:16])
-            labels.append(data[16])
+                    int(row[12]), int(row[13]), int(row[14]), int(row[15]),
+                    int(row[16]), int(row[17])]
+            evidence.append(data[:17])
+            labels.append(data[17])
     return evidence, labels
 
 
