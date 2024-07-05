@@ -99,7 +99,7 @@ def shortest_path(source, target):
         visited.add(node)
         if node.state == target:
             path = []
-            while not node.parent:  # not None
+            while node.parent is not None:
                 path.append((node.action, node.state))
                 node = node.parent
             path.reverse()
