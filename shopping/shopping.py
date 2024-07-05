@@ -100,15 +100,15 @@ def evaluate(labels, predictions):
     """
     sens = 0
     spec = 0
-    totalsens = 0
-    totalspec = 0
+    total_sens = 0
+    total_spec = 0
     for res, pre in zip(labels, predictions):
         if res == 1:
-            totalsens += 1
+            total_sens += 1
             if pre == res:
                 sens += 1
         if res == 0:
-            totalspec += 1
+            total_spec += 1
             if pre == res:
                 spec += 1
     return sens/totalsens, spec/totalspec
