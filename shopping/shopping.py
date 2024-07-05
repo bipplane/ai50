@@ -61,16 +61,23 @@ def load_data(filename):
     """
     evidence = []
     labels = []
+    months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    month_num = enumerate(months)
+    month = {k: v for v, k in month_num}
     with open("shopping.csv", "r") as f:
-        reader = csv.reader(f)
+        reader = csv.DictReader(f)
         for row in reader:
-            data = [int(row[0]), float(row[1]), int(row[2]), float(row[3]),
-                    int(row[4]), float(row[5]), float(row[6]), float(row[7]),
-                    float(row[8]), float(row[9]), int(row[10]), int(row[11]),
-                    int(row[12]), int(row[13]), int(row[14]), int(row[15]),
-                    int(row[16]), int(row[17])]
-            evidence.append(data[:17])
-            labels.append(data[17])
+            data = [int(row["Administrative"]), float(row["Administrative_Duration"]),
+                    int(row["Informational"]), float(row["Informational_Duration"]),
+                    int(row["ProductRelated"]), float(row["ProductRelated_Duration"]),
+                    float(row["BounceRates"]), float(row["ExitRates"]),
+                    float(row["PageValues"]), float(row["SpecialDay"]),
+                    int(month[row["Month"]]), int(row["OperatingSystems"]),
+                    int(row["Browser"]), int(row["Region"]), int(row["TrafficType"]),
+                    int(row["VisitorType"] == 'Returning_Visitor'),
+                    int(row["Weekend"] == 'TRUE')]
+            evidence.append(data)
+            labels.append(int(row["Revenue"] == 'TRUE'))
     return evidence, labels
 
 
