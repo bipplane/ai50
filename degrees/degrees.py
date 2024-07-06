@@ -94,21 +94,22 @@ def shortest_path(source, target):
     front = QueueFrontier()
     front.add(Node(source, parent=None, action=None))
     visited = set()
-    while not front.empty():
+    while True:
+        if front.empty():
+            return None
         node = front.remove()
         visited.add(node)
-        if node.state == target:
-            path = []
-            while node.parent is not None:
-                path.append((node.action, node.state))
-                node = node.parent
-            path.reverse()
-            return path
         for action, state in neighbors_for_person(node.state):
             if not front.contains_state(state) and state not in visited:
-                child = Node(state,node,action)
+                child = Node(state, node, action)
+                if child.state == target:
+                    path = []
+                    while child.parent is not None:
+                        path.append((child.action, child.state))
+                        child = child.parent
+                    path.reverse()
+                    return path
                 front.add(child)
-    return []
 
 
 def person_id_for_name(name):
