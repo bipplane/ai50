@@ -60,8 +60,8 @@ def get_color_for_attention_score(attention_score):
     attention_score = attention_score.numpy()
     lst = []
     for i in attention_score:
-        lst.append(round(i))
-    return  tuple(lst)
+        lst.append(int(i))
+    return tuple(lst)
 
 
 def visualize_attentions(tokens, attentions):
